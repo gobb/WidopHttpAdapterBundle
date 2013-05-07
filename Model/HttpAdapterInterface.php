@@ -14,6 +14,11 @@ namespace Widop\HttpAdapterBundle\Model;
 /**
  * Http adapter interface.
  *
+ * Headers may be passed using:
+ * - an indexed array (0 => 'Content-Type: html/text')
+ * - an associative array ('Content-Type' => 'html/text')
+ * - a mix of the two
+ *
  * @author GeLo <geloen.eric@gmail.com>
  */
 interface HttpAdapterInterface
