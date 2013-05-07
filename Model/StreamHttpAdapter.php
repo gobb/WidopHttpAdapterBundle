@@ -25,18 +25,7 @@ class StreamHttpAdapter implements HttpAdapterInterface
     {
         $ctx = $this->createStreamContext('GET', $headers);
 
-        if (($fp = fopen($this->fixUrl($url), 'rb', false, $ctx)) === false) {
-            throw new \Exception('An error occured when fetching the URL using streams.');
-        }
-
-        $content = stream_get_contents($fp);
-        fclose($fp);
-
-        if ($content === false) {
-            throw new \Exception('An error occured when fetching the URL using streams.');
-        }
-
-        return $content;
+        return $this->call($url, $ctx);
     }
 
     /**
@@ -46,6 +35,17 @@ class StreamHttpAdapter implements HttpAdapterInterface
     {
         $ctx = $this->createStreamContext('POST', $headers, $content);
 
+        return $this->call($url, $ctx);
+    }
+
+    /**
+     * Calls an URL given a context.
+     *
+     * @param string   $url     A url
+     * @param resource $context A resource created from stream_context_create.
+     */
+    protected function call($url, $ctx)
+    {
         if (($fp = fopen($this->fixUrl($url), 'rb', false, $ctx)) === false) {
             throw new \Exception('An error occured when fetching the URL using streams.');
         }
