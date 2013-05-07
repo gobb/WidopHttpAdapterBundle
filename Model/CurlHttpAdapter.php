@@ -25,11 +25,9 @@ class CurlHttpAdapter implements HttpAdapterInterface
     {
         $curl = $this->initCurl();
 
-        curl_setopt($curl, CURLOPT_URL, $url);
+        $this->setHeaders($curl, $headers);
 
-        if (!empty($headers)) {
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        }
+        curl_setopt($curl, CURLOPT_URL, $url);
 
         $content = curl_exec($curl);
 
@@ -49,12 +47,9 @@ class CurlHttpAdapter implements HttpAdapterInterface
     {
         $curl = $this->initCurl();
 
+        $this->setHeaders($curl, $headers);
+
         curl_setopt($curl, CURLOPT_URL, $url);
-
-        if (!empty($headers)) {
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        }
-
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
 
@@ -88,5 +83,28 @@ class CurlHttpAdapter implements HttpAdapterInterface
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         return $curl;
+    }
+
+    /**
+     * Fixes the headers to match the cUrl format and set them.
+     *
+     * @param resource $curl    The curl resource.
+     * @param array    $headers An array of headers.
+     */
+    protected function setHeaders($curl, array $headers)
+    {
+        $fixedHeaders = array();
+
+        foreach ($headers as $key => $value) {
+            if (is_int($key)) {
+                $fixedHeaders[] = $value;
+            } else {
+                $fixedHeaders[] = $key.': '.$value;
+            }
+        }
+
+        if (!empty($fixedHeaders)) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $fixedHeaders);
+        }
     }
 }
