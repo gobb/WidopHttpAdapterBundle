@@ -38,7 +38,7 @@ abstract class AbstractHttpAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testGetContentWithHeaders()
     {
-        $this->assertNotEmpty($this->httpAdapter->getContent('www.google.fr', array('Accept-Charset' => 'utf-8')));
+        $this->assertNotEmpty($this->httpAdapter->getContent('www.google.fr', array('Accept-Charset' => 'utf-8', 'Accept-Language: en-US,en;q=0.8')));
     }
 
     /**
@@ -51,20 +51,20 @@ abstract class AbstractHttpAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testPostContentWithoutHeaders()
     {
-        $this->assertNotEmpty($this->httpAdapter->postContent('www.google.fr'));
+        $this->assertNotEmpty($this->httpAdapter->postContent('www.widop.com'));
     }
 
     public function testPostContentWithHeaders()
     {
-        $this->assertNotEmpty($this->httpAdapter->postContent('www.google.fr', array('Accept-Charset' => 'utf-8')));
+        $this->assertNotEmpty($this->httpAdapter->postContent('www.widop.com', array('Accept-Charset' => 'utf-8', 'Accept-Language: en-US,en;q=0.8')));
     }
 
     public function testPostContentWithHeadersAndData()
     {
         $this->assertNotEmpty(
             $this->httpAdapter->postContent(
-                'www.google.fr',
-                array('Accept-Charset' => 'utf-8'),
+                'www.widop.fr',
+                array('Accept-Charset' => 'utf-8', 'Accept-Language: en-US,en;q=0.8'),
                 http_build_query(array('param' => 'value'))
             )
         );
